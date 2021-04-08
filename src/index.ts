@@ -1,6 +1,13 @@
 import { CellTypeDefinition, CellHandlerAttachParameters, CellElements, Cell } from "starboard-notebook/dist/src/types";
 import * as lithtmlImport from "lit-html";
 import { Runtime, ControlButton } from "starboard-notebook/dist/src/runtime";
+import { KernelManager } from "@jupyterlab/services";
+import * as P from "@jupyterlab/services/lib/serverconnection"
+import { runCodeInJupyter } from "./output";
+
+import "./styles";
+
+
 
 declare global {
     interface Window {
@@ -9,7 +16,7 @@ declare global {
     }
 }
 
-export function registerPython() {
+export function registerJupyter(kernelSettings: {serverSettings: any}) {
     /* These globals are exposed by Starboard Notebook. We can re-use them so we don't have to bundle them again. */
     const runtime = window.runtime;
     const lithtml = runtime.exports.libraries.LitHtml;
@@ -64,7 +71,20 @@ export function registerPython() {
         }
 
         async run() {
+            const kernelManager = new KernelManager({
+                standby: "when-hidden",
+                serverSettings: P.ServerConnection.makeSettings(kernelSettings.serverSettings)
+            });
+            const kernel = await kernelManager.startNew();
+
+            console.log(kernel);
+
             const codeToRun = this.cell.textContent;
+            
+
+            const el = await runCodeInJupyter(kernel, codeToRun);
+            this.elements.bottomElement.innerHTML = ""; // Drop any existing output els
+            this.elements.bottomElement.appendChild(el.node);
 
             this.lastRunId++;
             const currentRunId = this.lastRunId;
@@ -92,3 +112,5 @@ export function registerPython() {
 
     runtime.definitions.cellTypes.register(JUPYTER_CELL_TYPE_DEFINITION.cellType, JUPYTER_CELL_TYPE_DEFINITION);
 }
+
+(window as any).registerJupyterPlugin = registerJupyter;

@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "target": "es2020",
-      "module": "es2015",
+      "module": "commonjs",
       "moduleResolution": "node",
       "lib": ["es2020", "es2019", "es2018", "es2017", "dom"],
       "declaration": false,
@@ -9,6 +9,7 @@
       "forceConsistentCasingInFileNames": true,
       "strict": true,
       "outDir": "./dist",
+      "skipLibCheck": true,
       "esModuleInterop": true,
       "experimentalDecorators": true
     },
@@ -17,5 +18,5 @@
   ],
   "exclude": [
       "node_modules"
-  ]
+  ],
 }
