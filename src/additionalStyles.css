@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --jp-cell-prompt-width: calc(var(--cell-margin-left));
+}
+
+/* The prompt can extend into the margin */
+.jp-OutputArea {
+    margin-left: calc(-1 * min(var(--cell-margin-left), var(--jp-cell-prompt-width)));
+}
+
+.jp-OutputPrompt {
+    padding-left: 1px;
+    padding-right: 0;
+}
+
+.celltype-jupyter .cell-bottom{
+    overflow-y: visible;
+}

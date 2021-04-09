@@ -2,11 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: ['./dist/index.js'],
-  // mode: 'development',
+  entry: ['./src/index.ts'],
+  mode: 'development',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'starboard-jupyter.js'
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.d.ts'],
   },
   module: {
     rules: [
@@ -16,6 +19,13 @@ module.exports = {
       {
         test: /\.js$/,
         use: ['source-map-loader'],
+        enforce: 'pre',
+        // eslint-disable-next-line no-undef
+        exclude: /node_modules/
+      },
+      {
+        test: /\.ts$/,
+        use: ['source-map-loader', 'ts-loader'],
         enforce: 'pre',
         // eslint-disable-next-line no-undef
         exclude: /node_modules/

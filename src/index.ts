@@ -7,8 +7,6 @@ import { runCodeInJupyter } from "./output";
 
 import "./styles";
 
-
-
 declare global {
     interface Window {
       runtime: Runtime
