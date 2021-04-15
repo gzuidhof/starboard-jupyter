@@ -2,7 +2,7 @@
 Experiment for support of Starboard cells that are backed by a Jupyter kernel.
 
 ## Screenshot
-![](https://i.imgur.com/4XlMPf8.png)
+![](https://i.imgur.com/WFyAi5R.png)
 
 ## Setup
 
