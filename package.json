@@ -1,13 +1,11 @@
 {
   "name": "starboard-jupyter",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
   "description": "Jupyter-backed cells for Starboard Notebook",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/starboard-jupyter.js",
+  "module": "dist/starboard-jupyter.js",
   "scripts": {
-    "build": "webpack",
+    "build": "rimraf dist && webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublishOnly": "npm i && npm run build"
   },
