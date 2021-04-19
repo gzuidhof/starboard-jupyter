@@ -6,36 +6,26 @@ Experiment for support of Starboard cells that are backed by a Jupyter kernel.
 
 ## Setup
 
-### 1. Set up CORS to allow connections from notebook origins
 
-Your Jupyter or JupyterLab settings need to allow for connections from the origin you are running your notebook on.
+### 1. Install Jupyter Kernel Gateway
 
-First create the config file:
-```shell
-jupyter lab --generate-config
+```
+pip install jupyter_kernel_gateway
 ```
 
-The path to the config file will be printed. It is generally in your home directory under `.jupyter/jupyter_lab_config.py`. In this file change the following config value:
-
-```python
-c.ServerApp.allow_origin_pat = 'http://localhost:*'
-
-# OPTIONAL
-c.ServerApp.token = 'somestrongsecret'
+### 2. Start the Jupyter Kernel gateway:
 ```
-
-Of course you can make it more specific if you know the exact origin your notebook will run on.
-
-> Note: It also works with a plain "Jupyter Notebook" server instead of JupyterLab, but the config value keys will be slightly different.
-
-### 2. Start a Jupyter lab server
+jupyter kernelgateway --KernelGatewayApp.allow_origin="https://gz.starboard.host" --KernelGatewayApp.allow_headers="authorization,content-type" --JupyterWebsocketPersonality.list_kernels=True
 ```
-> jupyter lab --no-browser
-```
+*(change the origin to be the origin where you are hosting your notebook sandbox)*
 
-If you didn't set your own auth token in the config file, take note of the output when you run this and copy the token in the URL.
+> Note 1: right now auth with a token doesn't work for the websocket connection. The token simply doesn't get passed from the client, so for now there is no auth other than the origin check (and the fact that you can stay entirely within localhost). When that is fixed you should add `--KernelGatewayApp.auth_token="my-super-strong-secret-example"`
+
+> Note 2: It also works with a plain Jupyter Notebook or JupyterLab, but you will need to allow the origins and set the auth token with another method.
 
 ### 3. Initialize the plugin in your notebook
+
+You can use [this notebook](https://starboard.gg/nb/nA3wm87) to try it out.
 
 ```javascript
 // Or wherever you are hosting it, could be from some CDN.
@@ -44,7 +34,7 @@ import "http://localhost:8080/dist/starboard-jupyter.js";
 registerJupyterPlugin({
     serverSettings: {
         baseUrl: "http://localhost:8888",
-        token: "somestrongsecret",
+        token: "my-super-strong-secret-example",
     }
 })
 ```
