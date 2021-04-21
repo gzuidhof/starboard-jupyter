@@ -14,8 +14,19 @@ pip install jupyter_kernel_gateway
 ```
 
 ### 2. Start the Jupyter Kernel gateway:
-```
-jupyter kernelgateway --KernelGatewayApp.allow_origin="https://gz.starboard.host" --KernelGatewayApp.allow_headers="authorization,content-type" --JupyterWebsocketPersonality.list_kernels=True
+```shell
+jupyter kernelgateway \
+  --KernelGatewayApp.allow_origin="https://gz.starboard.host" \
+  --KernelGatewayApp.allow_headers="authorization,content-type,x-xsrftoken" \
+  --KernelGateWayApp.allow_methods="GET,OPTIONS,DELETE,POST" \
+  --JupyterWebsocketPersonality.list_kernels=True
+
+# or for a specific localhost port
+jupyter kernelgateway
+  --KernelGatewayApp.allow_origin="http://localhost:9001" \
+  --KernelGatewayApp.allow_headers="authorization,content-type,x-xsrftoken" \
+  --KernelGateWayApp.allow_methods="GET,DELETE,POST" \
+  --JupyterWebsocketPersonality.list_kernels=True
 ```
 *(change the origin to be the origin where you are hosting your notebook sandbox)*
 
@@ -25,7 +36,7 @@ jupyter kernelgateway --KernelGatewayApp.allow_origin="https://gz.starboard.host
 
 ### 3. Initialize the plugin in your notebook
 
-You can use [this notebook](https://starboard.gg/nb/nA3wm87) to try it out.
+You can use [this notebook](https://starboard.gg/nb/nA3wm87) (or without Starboard's interface around it [here](https://gz.starboard.host/v1/embed/0.8.9/br0qtd223akg00eiaos0/nA3wm87/)) to try it out.
 
 ```javascript
 // Or wherever you are hosting it, could be from some CDN.

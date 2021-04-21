@@ -128,10 +128,10 @@ export class StarboardJupyterManager extends LitElement.LitElement  {
 
     render() {
         return html`
-                <section class="starboard-jupyter-interface p-3 my-2">
+                <section class="starboard-jupyter-interface py-2 px-3 my-2">
                     <details>
                     <summary class="d-flex justify-content-between flex-wrap">
-                        <div class="d-flex align-items-center mb-2 flex-wrap">
+                        <div class="d-flex align-items-center flex-wrap">
                             <h2 class="h5 mb-0 me-2">Starboard Jupyter Plugin</h2>
                             ${
                                 this.connectionError ?
@@ -154,7 +154,7 @@ export class StarboardJupyterManager extends LitElement.LitElement  {
                                     <span title="Kernel Status" class="badge bg-dark">
                                         ${this.currentKernel.status}
                                     </span>
-                                    <button @click=${() => this.interruptKernel()} class="btn btn-outline-secondary btn-sm btn-rounded">Interrupt Kernel</button>`
+                                    <button @click=${() => this.interruptKernel()} title="Interrupt Kernel" class="btn btn-outline-secondary btn-sm btn-rounded py-0">Interrupt</button>`
                                 : html`<span class="badge bg-light text-dark">Not connected to a kernel</span>`
                         }</div>
                     </summary>

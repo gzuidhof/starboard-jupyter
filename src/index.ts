@@ -19,12 +19,7 @@ declare global {
     }
 }
 
-let hasBeenRegistered = false;
-
 export function registerJupyter(jupyterOpts: JupyterPluginSettings) {
-    if (hasBeenRegistered) return;
-    hasBeenRegistered = true;
-
     /* These globals are exposed by Starboard Notebook. We can re-use them so we don't have to bundle them again. */
     const runtime = window.runtime;
     const lithtml = runtime.exports.libraries.LitHtml;
@@ -118,8 +113,14 @@ export function registerJupyter(jupyterOpts: JupyterPluginSettings) {
 
     runtime.definitions.cellTypes.register(JUPYTER_CELL_TYPE_DEFINITION.cellType, JUPYTER_CELL_TYPE_DEFINITION);
     
+    const existingKernelUI = document.querySelector("starboard-jupyter-manager");
+    if (existingKernelUI) {
+        (existingKernelUI as StarboardJupyterManager).remove();
+    }
+
     const nb = document.querySelector("starboard-notebook");
     if (nb) nb.prepend(globalKernelManager)
 }
 
+// until webpack can do ESM exports we have to do this :(
 (window as any).registerJupyterPlugin = registerJupyter;
