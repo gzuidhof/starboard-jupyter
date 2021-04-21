@@ -22,7 +22,7 @@ jupyter kernelgateway \
   --JupyterWebsocketPersonality.list_kernels=True
 
 # or for a specific localhost port
-jupyter kernelgateway
+jupyter kernelgateway \
   --KernelGatewayApp.allow_origin="http://localhost:9001" \
   --KernelGatewayApp.allow_headers="authorization,content-type,x-xsrftoken" \
   --KernelGateWayApp.allow_methods="GET,DELETE,POST" \
