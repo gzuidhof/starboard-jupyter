@@ -1,9 +1,10 @@
 {
   "name": "starboard-jupyter",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Jupyter-backed cells for Starboard Notebook",
   "main": "dist/starboard-jupyter.js",
   "module": "dist/starboard-jupyter.js",
+  "types": "dist/starboard-jupyter/index.d.ts",
   "type": "module",
   "scripts": {
     "build": "rimraf dist && webpack",
