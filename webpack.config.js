@@ -8,7 +8,7 @@ export default {
   entry: ['./src/index.ts'],
   output: {
     path: path.resolve('dist'),
-    filename: 'starboard-jupyter.js',
+    filename: 'index.js',
     module: true,
     libraryTarget: "module"
   },
