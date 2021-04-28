@@ -1,16 +1,13 @@
-import { CellTypeDefinition, CellHandlerAttachParameters, CellElements, Cell } from "starboard-notebook/dist/src/types";
+import { CellTypeDefinition, CellHandlerAttachParameters, CellElements, Cell, StarboardPlugin } from "starboard-notebook/dist/src/types";
 import * as lithtmlImport from "lit-html";
-import { Runtime, ControlButton } from "starboard-notebook/dist/src/runtime";
+import { Runtime, ControlButton } from "starboard-notebook/dist/src/types";
 
 import "./styles";
 import { JupyterPluginSettings } from "./types";
 import { StarboardJupyterManager } from "./components/kernelManager";
-import { OutputArea, OutputAreaModel, } from "@jupyterlab/outputarea";
-
-import {
-    RenderMimeRegistry,
-    standardRendererFactories
-  } from '@jupyterlab/rendermime';
+import { OutputArea } from "@jupyterlab/outputarea";
+import { createJupyterOutputArea } from "./output";
+export { createJupyterOutputArea } from "./output";
 
 declare global {
     interface Window {
@@ -19,7 +16,10 @@ declare global {
     }
 }
 
-export function registerJupyter(jupyterOpts: JupyterPluginSettings) {
+// Singleton global kernel manager.
+let globalKernelManager: StarboardJupyterManager;
+
+function registerJupyter(jupyterOpts: JupyterPluginSettings = {}) {
     /* These globals are exposed by Starboard Notebook. We can re-use them so we don't have to bundle them again. */
     const runtime = window.runtime;
     const lithtml = runtime.exports.libraries.LitHtml;
@@ -28,7 +28,7 @@ export function registerJupyter(jupyterOpts: JupyterPluginSettings) {
     const cellControlsTemplate = runtime.exports.templates.cellControls;
     const icons = runtime.exports.templates.icons;
 
-    const globalKernelManager = new StarboardJupyterManager(jupyterOpts);
+    globalKernelManager = new StarboardJupyterManager(jupyterOpts);
 
     const JUPYTER_CELL_TYPE_DEFINITION: CellTypeDefinition = {
         name: "Jupyter",
@@ -51,9 +51,7 @@ export function registerJupyter(jupyterOpts: JupyterPluginSettings) {
             this.cell = cell;
             this.runtime = runtime;
 
-            const model = new OutputAreaModel();
-            const rendermime = new RenderMimeRegistry({ initialFactories: standardRendererFactories });
-            this.outputArea = new OutputArea({ model, rendermime });
+            this.outputArea = createJupyterOutputArea();
         }
 
         private getControls(): lithtmlImport.TemplateResult | string {
@@ -118,9 +116,31 @@ export function registerJupyter(jupyterOpts: JupyterPluginSettings) {
         (existingKernelUI as StarboardJupyterManager).remove();
     }
 
-    const nb = document.querySelector("starboard-notebook");
-    if (nb) nb.prepend(globalKernelManager)
+    if (jupyterOpts.mount) {
+        jupyterOpts.mount.appendChild(globalKernelManager)
+    } else {
+        const nb = document.querySelector("starboard-notebook");
+        if (nb) nb.prepend(globalKernelManager)
+    }
 }
 
-// until webpack can do ESM exports we have to do this :(
-(window as any).registerJupyterPlugin = registerJupyter;
+const pluginExports = {
+    createJupyterOutputArea: createJupyterOutputArea,
+    getGlobalKernelManager: () => {return globalKernelManager}
+};
+
+export const plugin: StarboardPlugin<typeof pluginExports> = {
+    id: "starboard-jupyter",
+    metadata: {
+        name: "Jupyter for Starboard"
+    },
+    exports: pluginExports,
+    async register(opts: any) {
+        if (opts === undefined) {
+            opts = {};
+        }
+        await registerJupyter(opts);
+    }
+};
+
+export default plugin;

@@ -4,7 +4,7 @@
       "module": "commonjs",
       "moduleResolution": "node",
       "lib": ["es2020", "es2019", "es2018", "es2017", "dom"],
-      "declaration": false,
+      "declaration": true,
       "sourceMap": true,
       "forceConsistentCasingInFileNames": true,
       "strict": true,

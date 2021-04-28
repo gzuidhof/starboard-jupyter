@@ -1,9 +1,10 @@
 {
   "name": "starboard-jupyter",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Jupyter-backed cells for Starboard Notebook",
   "main": "dist/starboard-jupyter.js",
   "module": "dist/starboard-jupyter.js",
+  "type": "module",
   "scripts": {
     "build": "rimraf dist && webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -34,7 +35,7 @@
     "lit-html": "^1.2.1",
     "rimraf": "^3.0.2",
     "source-map-loader": "^2.0.1",
-    "starboard-notebook": "^0.8.2",
+    "starboard-notebook": "^0.8.12",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.1.0",
     "typescript": "^4.2.3",

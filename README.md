@@ -15,17 +15,20 @@ pip install jupyter_kernel_gateway
 
 ### 2. Start the Jupyter Kernel gateway:
 ```shell
-KG_ALLOW_METHODS="POST,GET,OPTIONS,DELETE" \
+# For some reason we need
+KG_ALLOW_METHODS="*" \
 jupyter kernelgateway \
   --KernelGatewayApp.allow_origin="https://gz.starboard.host" \
   --KernelGatewayApp.allow_headers="authorization,content-type,x-xsrftoken" \
+  --KernelGatewayApp.max_age=3600 \\
   --JupyterWebsocketPersonality.list_kernels=True
 
 # or for a specific localhost port
-KG_ALLOW_METHODS="POST,GET,OPTIONS,DELETE" \
+KG_ALLOW_METHODS="*" \
 jupyter kernelgateway \
   --KernelGatewayApp.allow_origin="http://localhost:9001" \
   --KernelGatewayApp.allow_headers="authorization,content-type,x-xsrftoken" \
+  --KernelGatewayApp.max_age=3600 \
   --JupyterWebsocketPersonality.list_kernels=True
 ```
 *(change the origin to be the origin where you are hosting your notebook sandbox)*

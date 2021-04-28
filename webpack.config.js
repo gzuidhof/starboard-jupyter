@@ -1,11 +1,19 @@
-const path = require('path');
-const webpack = require('webpack');
+import * as path from "path";
+import webpack from "webpack"
+const {DefinePlugin} = webpack;
 
-module.exports = {
+// const path = require('path');
+// const webpack = require('webpack');
+export default {
   entry: ['./src/index.ts'],
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'starboard-jupyter.js'
+    path: path.resolve('dist'),
+    filename: 'starboard-jupyter.js',
+    module: true,
+    libraryTarget: "module"
+  },
+  experiments: {
+    outputModule: true
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.d.ts'],
@@ -55,7 +63,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
+    new DefinePlugin({
     //   // Needed for Blueprint. See https://github.com/palantir/blueprint/issues/4393
       'process.env': '{}',
     //   // Needed for various packages using cwd(), like the path polyfill
