@@ -123,7 +123,6 @@ export class StarboardJupyterManager extends LitElement.LitElement  {
             }
             this.manager.dispose()
         })();
-        this.manager.refreshRunning
     }
 
     render() {

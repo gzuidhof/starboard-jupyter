@@ -1,6 +1,6 @@
 {
   "name": "starboard-jupyter",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Jupyter-backed cells for Starboard Notebook",
   "main": "dist/index.js",
   "module": "dist/index.js",

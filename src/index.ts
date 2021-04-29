@@ -135,7 +135,7 @@ export const plugin: StarboardPlugin<typeof pluginExports> = {
         name: "Jupyter for Starboard"
     },
     exports: pluginExports,
-    async register(opts: any) {
+    async register(opts: JupyterPluginSettings) {
         if (opts === undefined) {
             opts = {};
         }

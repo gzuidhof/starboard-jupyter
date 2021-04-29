@@ -15,9 +15,14 @@ export default {
   experiments: {
     outputModule: true
   },
+  optimization: {
+    minimize: false,
+    usedExports: true,
+  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.d.ts'],
   },
+  mode: "production",
   module: {
     rules: [
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
@@ -25,15 +30,15 @@ export default {
       { test: /\.txt$/, use: 'raw-loader' },
       {
         test: /\.js$/,
-        use: ['source-map-loader'],
-        enforce: 'pre',
+        use: [/*'source-map-loader'*/],
+        //enforce: 'pre',
         // eslint-disable-next-line no-undef
         exclude: /node_modules/
       },
       {
         test: /\.ts$/,
-        use: ['source-map-loader', 'ts-loader'],
-        enforce: 'pre',
+        use: [/*'source-map-loader', */'ts-loader'],
+        //enforce: 'pre',
         // eslint-disable-next-line no-undef
         exclude: /node_modules/
       },
