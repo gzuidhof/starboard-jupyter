@@ -35,7 +35,13 @@ export class StarboardJupyterManager extends LitElement.LitElement  {
         }, this)
 
         this.manager.ready.then(() => {
+            console.log("Jupyter manager is now ready");
             this.isReady = true;
+            this.performUpdate();
+        }, (err) => {
+            console.warn("Jupyter manager failed to ready", err);
+            this.isReady = false;
+            this.connectionError = err;
             this.performUpdate();
         });
 
@@ -55,7 +61,7 @@ export class StarboardJupyterManager extends LitElement.LitElement  {
             this.performUpdate()
         });
         this.currentKernel!.connectionStatusChanged.connect((kc, status) => {this.performUpdate()});
-        this.manager.refreshRunning();
+        this.manager.refreshRunning().catch(e => console.error("Failed to refresh running kernels:", e));
     }
 
     createRenderRoot() {

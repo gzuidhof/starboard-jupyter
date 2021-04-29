@@ -1,6 +1,6 @@
 {
   "name": "starboard-jupyter",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "description": "Jupyter-backed cells for Starboard Notebook",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -33,6 +33,7 @@
     "@types/requirejs": "^2.1.32",
     "clean-css": "^4.2.3",
     "css-loader": "^5.2.0",
+    "file-loader": "^6.2.0",
     "lit-html": "^1.2.1",
     "rimraf": "^3.0.2",
     "source-map-loader": "^2.0.1",

@@ -11,6 +11,10 @@
     margin-left: calc(-1 * min(var(--cell-margin-left), var(--jp-cell-prompt-width)));
 }
 
+.jp-OutputArea code, .jp-OutputArea pre {
+    background-color: unset;
+}
+
 .jp-OutputPrompt {
     padding-left: 1px;
     padding-right: 0;
