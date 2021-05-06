@@ -1,36 +1,45 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :root {
-    --jp-cell-prompt-width: calc(var(--cell-margin-left));
+  --jp-cell-prompt-width: calc(var(--cell-margin-left));
 }
 
 /* The prompt can extend into the margin */
 .jp-OutputArea {
-    margin-left: calc(-1 * min(var(--cell-margin-left), var(--jp-cell-prompt-width)));
+  margin-left: calc(-1 * min(var(--cell-margin-left), var(--jp-cell-prompt-width)));
 }
 
-.jp-OutputArea code, .jp-OutputArea pre {
-    background-color: unset;
+.jp-OutputArea code,
+.jp-OutputArea pre {
+  background-color: unset;
 }
 
 .jp-OutputPrompt {
-    padding-left: 1px;
-    padding-right: 0;
+  padding-left: 1px;
+  padding-right: 0;
 }
 
-.celltype-jupyter .cell-bottom{
-    overflow-y: visible;
+.celltype-jupyter .cell-bottom {
+  overflow-y: visible;
 }
 
 starboard-jupyter-manager {
-        display: grid;
-        grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
+  display: grid;
+  grid-template-columns: [content-start] auto [content-end];
+}
+
+starboard-notebook > starboard-jupyter-manager {
+  /* This matches the notebook itself.. this probably deserves it's own class in starboard-notebook for easier re-use.*/
+  grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(
+      auto,
+      calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))
+    ) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
 }
 
 .starboard-jupyter-interface {
-    grid-column: content-start / content-end;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
+  grid-column: content-start / content-end;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
 }
