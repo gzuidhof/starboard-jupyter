@@ -114,6 +114,10 @@ function registerJupyter(runtime: Runtime, jupyterOpts: JupyterPluginSettings = 
     async dispose() {
       this.editor.remove();
     }
+
+    clear() {
+      this.outputArea.model.clear();
+    }
   }
 
   runtime.definitions.cellTypes.register(JUPYTER_CELL_TYPE_DEFINITION.cellType, JUPYTER_CELL_TYPE_DEFINITION);
