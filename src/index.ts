@@ -5,7 +5,6 @@ import {
   Cell,
   StarboardPlugin,
 } from "starboard-notebook/dist/src/types";
-import * as lithtmlImport from "lit-html";
 import { Runtime, ControlButton } from "starboard-notebook/dist/src/types";
 
 import "./styles";
@@ -13,6 +12,7 @@ import { JupyterPluginSettings } from "./types";
 import { StarboardJupyterManager } from "./components/kernelManager";
 import { OutputArea } from "@jupyterlab/outputarea";
 import { createJupyterOutputArea } from "./output";
+import { TemplateResult } from "lit-element/lit-element";
 export { createJupyterOutputArea } from "./output";
 
 declare global {
@@ -25,9 +25,9 @@ declare global {
 // Singleton global kernel manager.
 let globalKernelManager: StarboardJupyterManager;
 
-function registerJupyter(runtime: Runtime, jupyterOpts: JupyterPluginSettings = {}) {
+function registerJupyter(runtime: Runtime, jupyterOpts: JupyterPluginSettings = { headerText: "Jupyter Plugin" }) {
   /* These globals are exposed by Starboard Notebook. We can re-use them so we don't have to bundle them again. */
-  const lithtml = runtime.exports.libraries.LitHtml;
+  const lit = runtime.exports.libraries.lit;
 
   const StarboardTextEditor = runtime.exports.elements.StarboardTextEditor;
   const cellControlsTemplate = runtime.exports.templates.cellControls;
@@ -59,7 +59,7 @@ function registerJupyter(runtime: Runtime, jupyterOpts: JupyterPluginSettings = 
       this.outputArea = createJupyterOutputArea();
     }
 
-    private getControls(): lithtmlImport.TemplateResult | string {
+    private getControls(): TemplateResult | string {
       const icon = this.isCurrentlyRunning ? icons.ClockIcon : icons.PlayCircleIcon;
       const tooltip = this.isCurrentlyRunning ? "Cell is running" : "Run Cell";
       const runButton: ControlButton = {
@@ -76,7 +76,7 @@ function registerJupyter(runtime: Runtime, jupyterOpts: JupyterPluginSettings = 
       this.elements = params.elements;
 
       const topElement = this.elements.topElement;
-      lithtml.render(this.getControls(), this.elements.topControlsElement);
+      lit.render(this.getControls(), this.elements.topControlsElement);
 
       this.editor = new StarboardTextEditor(this.cell, this.runtime, {
         language: "python",
@@ -92,14 +92,14 @@ function registerJupyter(runtime: Runtime, jupyterOpts: JupyterPluginSettings = 
       this.lastRunId++;
       const currentRunId = this.lastRunId;
       this.isCurrentlyRunning = true;
-      lithtml.render(this.getControls(), this.elements.topControlsElement);
+      lit.render(this.getControls(), this.elements.topControlsElement);
 
       await globalKernelManager.runCode({ code: codeToRun }, this.outputArea);
       await this.outputArea.future.done;
 
       if (this.lastRunId === currentRunId) {
         this.isCurrentlyRunning = false;
-        lithtml.render(this.getControls(), this.elements.topControlsElement);
+        lit.render(this.getControls(), this.elements.topControlsElement);
       }
 
       const val = this.outputArea.model.toJSON();
@@ -148,9 +148,9 @@ export const plugin: StarboardPlugin<JupyterPluginSettings, typeof pluginExports
     name: "Jupyter for Starboard",
   },
   exports: pluginExports,
-  async register(runtime: Runtime, opts: JupyterPluginSettings) {
+  async register(runtime: Runtime, opts?: JupyterPluginSettings) {
     if (opts === undefined) {
-      opts = {};
+      opts = { headerText: "Jupyter Plugin" };
     }
     registerJupyter(runtime, opts);
   },

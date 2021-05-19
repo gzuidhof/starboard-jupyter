@@ -4,12 +4,13 @@ import { JupyterPluginSettings } from "../types";
 import * as P from "@jupyterlab/services/lib/serverconnection";
 import { IKernelConnection } from "@jupyterlab/services/lib/kernel/kernel";
 import { OutputArea } from "@jupyterlab/outputarea";
+import { customElement } from "lit/decorators/custom-element";
 
-const LitElement = window.runtime.exports.libraries.LitElement;
-const html = LitElement.html;
+const lit = window.runtime.exports.libraries.lit;
+const html = lit.html;
 
-@LitElement.customElement("starboard-jupyter-manager")
-export class StarboardJupyterManager extends LitElement.LitElement {
+@customElement("starboard-jupyter-manager")
+export class StarboardJupyterManager extends lit.LitElement {
   private settings: JupyterPluginSettings;
   private manager: KernelManager;
 
@@ -142,7 +143,7 @@ export class StarboardJupyterManager extends LitElement.LitElement {
         <details>
           <summary class="d-flex justify-content-between flex-wrap">
             <div class="d-flex align-items-center flex-wrap">
-              <h2 class="h5 mb-0 me-2">Starboard Jupyter Plugin</h2>
+              ${this.settings.headerText ? html`<h2 class="h5 mb-0 me-2">${this.settings.headerText}</h2>` : undefined}
               ${this.connectionError
                 ? html`<div class="badge bg-danger" style="width: max-content">Connection Error</div>`
                 : this.isReady
